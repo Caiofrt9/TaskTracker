@@ -13,23 +13,23 @@
         />
       </div>
       <div class="column">
-        <div class="is-flex is-align-items-center is-justify-content-space-between">
-          <section>
-          <strong>00:00:00</strong>
-        </section>
-        <button class="button">
-          <span class="icon">
-            <i class="fas fa-play"></i>
-          </span>
-          <span>play</span>
-        </button>
+        <div
+          class="is-flex is-align-items-center is-justify-content-space-between"
+        >
+          <Cronometro :timeInSeconds='timeInSeconds'/>
+          <button class="button" @click="handleStart">
+            <span class="icon">
+              <i class="fas fa-play"></i>
+            </span>
+            <span>play</span>
+          </button>
 
-        <button class="button">
-          <span class="icon">
-            <i class="fas fa-stop"></i>
-          </span>
-          <span>stop</span>
-        </button>
+          <button class="button" @click="handleStop">
+            <span class="icon">
+              <i class="fas fa-stop"></i>
+            </span>
+            <span>stop</span>
+          </button>
         </div>
       </div>
     </div>
@@ -37,11 +37,29 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
+import Cronometro from "./Cronometro.vue";
 
-  import { defineComponent } from 'vue';
-
-  export default defineComponent({
-    name: 'TaskForm'
-  })
-
+export default defineComponent({
+    name: "TaskForm",
+    components: {
+      Cronometro
+    },
+    data() {
+        return {
+            timeInSeconds: 0,
+            cronometro: 0,
+        };
+    },
+    methods: {
+        handleStart() {
+            this.cronometro = setInterval(() => {
+                this.timeInSeconds += 1;
+            }, 1000);
+        },
+        handleStop() {
+            clearInterval(this.cronometro);
+        },
+    },
+});
 </script>
