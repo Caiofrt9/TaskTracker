@@ -5,7 +5,10 @@
     </div>
 
     <div class="column is-three-quarter">
-      <TaskForm />
+      <TaskForm @aoSalvarTarefa="saveTask"/>
+      <div class="list">
+        <Task v-for='(task , index) in tasks' :key='index' :task="task"/>
+      </div>
     </div>
   </main>
 </template>
@@ -14,13 +17,27 @@
 import { defineComponent } from 'vue';
 import SideBar from './components/SideBar.vue';
 import TaskForm from './components/TaskForm.vue';
+import Task from './components/Task.vue';
+import ITask from './Interfaces/ITask';
 
 export default defineComponent({
     name: "App",
-    components: { SideBar, TaskForm}
+    components: { SideBar, TaskForm, Task},
+    data () {
+      return {
+        tasks: [] as ITask[]
+      }
+    },
+    methods: {
+      saveTask (task: ITask) {
+        this.tasks.push(task)
+      }
+    }
 });
 </script>
 
 <style>
-
+  .list {
+    padding: 1.5rem
+  }
 </style>

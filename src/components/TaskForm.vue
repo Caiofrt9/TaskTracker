@@ -1,36 +1,11 @@
 <template>
   <div class="box">
     <div class="columns">
-      <div
-        class="column is-8"
-        role="form"
-        aria-label="Formulário para criação de uma nova tarefa"
-      >
-        <input
-          type="text"
-          class="input"
-          placeholder="Qual tarefa você deseja iniciar?"
-        />
+      <div class="column is-8" role="form" aria-label="Formulário para criação de uma nova tarefa">
+        <input type="text" class="input" placeholder="Qual tarefa você deseja iniciar?" v-model="description" />
       </div>
       <div class="column">
-        <div
-          class="is-flex is-align-items-center is-justify-content-space-between"
-        >
-          <Cronometro :timeInSeconds='timeInSeconds'/>
-          <button class="button" @click="handleStart">
-            <span class="icon">
-              <i class="fas fa-play"></i>
-            </span>
-            <span>play</span>
-          </button>
-
-          <button class="button" @click="handleStop">
-            <span class="icon">
-              <i class="fas fa-stop"></i>
-            </span>
-            <span>stop</span>
-          </button>
-        </div>
+        <Timer @aoTemporizadorFinalizado='finishTask' />
       </div>
     </div>
   </div>
@@ -38,28 +13,27 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Cronometro from "./Cronometro.vue";
+import Timer from "./Timer.vue";
 
 export default defineComponent({
-    name: "TaskForm",
-    components: {
-      Cronometro
-    },
-    data() {
-        return {
-            timeInSeconds: 0,
-            cronometro: 0,
-        };
-    },
-    methods: {
-        handleStart() {
-            this.cronometro = setInterval(() => {
-                this.timeInSeconds += 1;
-            }, 1000);
-        },
-        handleStop() {
-            clearInterval(this.cronometro);
-        },
-    },
+  name: "TaskForm",
+  emits: ['aoSalvarTarefa'],
+  components: {
+    Timer
+  },
+  data() {
+    return {
+      description: ''
+    }
+  },
+  methods: {
+    finishTask(elapsedTime: number): void {
+      this.$emit('aoSalvarTarefa', {
+        durationInSeconds: elapsedTime,
+        description: this.description
+      })
+      this.description = ''
+    }
+  }
 });
 </script>
