@@ -1,6 +1,6 @@
 <template>
   <section>
-    <strong>
+    <strong class="display">
       {{ elapsedTime }}
      </strong>
   </section>
@@ -26,3 +26,9 @@
 
   })
 </script>
+
+<style>
+.display{
+  color: var(--texto-primario);
+}
+</style>
